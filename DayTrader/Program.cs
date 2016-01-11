@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -11,23 +10,23 @@ namespace DayTrader
     {
       var input = args[0];
 
-      Console.WriteLine("The best trades are {0}", DayTrade(
-        input.Split(' ').Select(value => float.Parse(value, CultureInfo.InvariantCulture)
-      )));
+      Console.WriteLine("The best trades are {0}", 
+        DayTrade(
+          input.Split(' ').Select(value => float.Parse(value, CultureInfo.InvariantCulture)).ToArray()
+        )
+      );
 
       Console.ReadLine();
     }
 
 
-    private static String DayTrade(IEnumerable<float> convertedInput)
+    private static String DayTrade(float[] convertedInput)
     {
-      var inputArray = convertedInput.ToArray();
-
       var lowest = convertedInput.Min();
 
-      var highestAfterLowest = inputArray.Skip(Array.IndexOf(inputArray, lowest) + 2).Max();
+      var highestAfterLowest = convertedInput.Skip(Array.IndexOf(convertedInput, lowest) + 2).Max(); // + 1 to begin searching after the lowest value, +1 to take into account it can never be the next value.
 
-      return String.Format("{0} {1}", lowest.ToString(CultureInfo.InvariantCulture), highestAfterLowest.ToString(CultureInfo.InvariantCulture));
+      return String.Format(CultureInfo.InvariantCulture, "{0} {1}", lowest, highestAfterLowest);
     }
   }
 }
